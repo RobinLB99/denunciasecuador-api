@@ -16,21 +16,13 @@ import ec.com.denunciasecuador.feature.usuario.service.UsuarioServiceImpl;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
 	private UsuarioServiceImpl usuarioServiceImpl;
 
 	public UsuarioController(UsuarioServiceImpl usuarioServiceImpl) {
 		this.usuarioServiceImpl = usuarioServiceImpl;
-	}
-
-	private UsuarioResponseDTO crearuUsuarioResponseDTO(Usuario usuario) {
-		UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO();
-		usuarioResponseDTO.setFirstName(usuario.getFirstName());
-		usuarioResponseDTO.setSurnames(usuario.getSurnames());
-		usuarioResponseDTO.setUsername(usuario.getCredential().getUsername());
-		return usuarioResponseDTO;
 	}
 
 	@GetMapping("/getByCI/{numeroIdentidad}")
@@ -46,10 +38,18 @@ public class UsuarioController {
 		return ResponseEntity.ok(usuarioDTO);
 	}
 
-	@PostMapping("/guardar")
+	@PostMapping("/guardar_usuario")
 	public ResponseEntity<UsuarioResponseDTO> guardarUsuario(@Valid @RequestBody UsuarioRequestDTO usuarioRequestDTO) {
 		UsuarioResponseDTO usuarioDTO = crearuUsuarioResponseDTO(usuarioServiceImpl.guardarUsuario(usuarioRequestDTO));
 		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
+	}
+
+	private UsuarioResponseDTO crearuUsuarioResponseDTO(Usuario usuario) {
+		UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO();
+		usuarioResponseDTO.setFirstName(usuario.getFirstName());
+		usuarioResponseDTO.setSurnames(usuario.getSurnames());
+		usuarioResponseDTO.setUsername(usuario.getCredential().getUsername());
+		return usuarioResponseDTO;
 	}
 
 }

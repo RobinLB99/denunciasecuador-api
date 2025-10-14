@@ -1,60 +1,84 @@
 package ec.com.denunciasecuador.feature.denuncia.service;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ec.com.denunciasecuador.common.exception.entitynotfound.DenunciaNotFoundException;
+import ec.com.denunciasecuador.common.exception.entitynotfound.UsuarioNotFoundException;
 import ec.com.denunciasecuador.feature.denuncia.dto.DenunciaRequestDTO;
 import ec.com.denunciasecuador.feature.denuncia.model.Denuncia;
 import ec.com.denunciasecuador.feature.denuncia.repository.DenunciaRepository;
 import ec.com.denunciasecuador.feature.denuncia.service.contract.DenunciaService;
+import ec.com.denunciasecuador.feature.usuario.model.Usuario;
+import ec.com.denunciasecuador.feature.usuario.repository.UsuarioRepository;
 
 @Service
 public class DenunciaServiceImpl implements DenunciaService {
 
 	private DenunciaRepository denunciaRepository;
+	private UsuarioRepository usuarioRepository;
 
-	public DenunciaServiceImpl(DenunciaServiceImpl denunciaServiceImpl) {
+	public DenunciaServiceImpl(DenunciaRepository denunciaRepository, UsuarioRepository usuarioRepository) {
 		this.denunciaRepository = denunciaRepository;
+		this.usuarioRepository = usuarioRepository;
 	}
 
 	@Override
 	public Denuncia guardarDenuncia(DenunciaRequestDTO denunciaRequestDTO) {
-		// TODO Auto-generated method stub
-		return null;
+		Usuario usuario = usuarioRepository.findById(denunciaRequestDTO.getUsuario_id())
+				.orElseThrow(() -> new UsuarioNotFoundException(
+						"No se encontro el usuario con el ID: " + denunciaRequestDTO.getUsuario_id()));
+		return denunciaRepository.save(crearObjetoDenuncia(denunciaRequestDTO, usuario));
 	}
 
 	@Override
 	public void eliminarDenuncia(Denuncia denuncia) {
-		// TODO Auto-generated method stub
-
+		denunciaRepository.delete(denuncia);
 	}
 
 	@Override
 	public void eliminarDenunciaPorId(Long id) {
-		// TODO Auto-generated method stub
-
+		if (!denunciaRepository.existsById(id))
+			throw new DenunciaNotFoundException("La denuncia con ID " + id + " no existe.");
+		denunciaRepository.deleteById(id);
 	}
 
 	@Transactional(readOnly = true)
 	@Override
 	public Denuncia obtenerDenunciaPorId(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+		return denunciaRepository.findById(id)
+				.orElseThrow(() -> new DenunciaNotFoundException("No se encontro la denuncia con el ID: " + id));
 	}
 
 	@Transactional(readOnly = true)
 	@Override
-	public Page<Denuncia> obtenerDenunciasPorNumeroIdentidadUsuario(String numeroIdentidad) {
-		// TODO Auto-generated method stub
-		return null;
+	public Page<Denuncia> obtenerDenunciasPorNumeroIdentidadUsuario(String numeroIdentidad, int pagina,
+			int tamanioPagina) {
+		Pageable pageable = PageRequest.of(pagina, tamanioPagina, Sort.by("title"));
+		return denunciaRepository.findDenunciasByIdentityNumberUsuario(numeroIdentidad, pageable);
 	}
 
 	@Transactional(readOnly = true)
 	@Override
-	public Page<Denuncia> obtenerTodasLasDenuncias() {
-		// TODO Auto-generated method stub
-		return null;
+	public Page<Denuncia> obtenerTodasLasDenuncias(int pagina, int tamanioPagina) {
+		Pageable pageable = PageRequest.of(pagina, tamanioPagina, Sort.by("title"));
+		return denunciaRepository.findAll(pageable);
+	}
+
+	private final Denuncia crearObjetoDenuncia(DenunciaRequestDTO denunciaRequestDTO, Usuario usuario) {
+		Denuncia denuncia = new Denuncia();
+		denuncia.setTitle(denunciaRequestDTO.getTitle());
+		denuncia.setDescription(denunciaRequestDTO.getDescription());
+		denuncia.setReportType(denunciaRequestDTO.getReportType());
+		denuncia.setEventTimestamp(denunciaRequestDTO.getEventTimestamp());
+		denuncia.setCityProvince(denunciaRequestDTO.getCityProvince());
+		denuncia.setPrivate(denunciaRequestDTO.isPrivate());
+		denuncia.setUsuario(usuario);
+		return denuncia;
 	}
 
 }

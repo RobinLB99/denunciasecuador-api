@@ -15,8 +15,8 @@ public interface DenunciaService {
 
 	public Denuncia obtenerDenunciaPorId(Long id);
 
-	public Page<Denuncia> obtenerDenunciasPorNumeroIdentidadUsuario(String numeroIdentidad);
+	public Page<Denuncia> obtenerDenunciasPorNumeroIdentidadUsuario(String numeroIdentidad, int pagina, int tamanioPagina);
 
-	public Page<Denuncia> obtenerTodasLasDenuncias();
+	public Page<Denuncia> obtenerTodasLasDenuncias(int pagina, int tamanioPagina);
 
 }

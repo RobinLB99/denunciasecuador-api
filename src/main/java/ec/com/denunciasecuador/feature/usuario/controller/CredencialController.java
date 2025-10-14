@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/usuario")
+@RequestMapping("/usuarios")
 public class CredencialController {
 
 	private CredencialServiceImpl credencialServiceImpl;
@@ -25,21 +25,21 @@ public class CredencialController {
 		this.credencialServiceImpl = credencialServiceImpl;
 	}
 
-	@GetMapping("/credencial/getByUsername/{username}")
+	@GetMapping("/credenciales/getByUsername/{username}")
 	public ResponseEntity<CredencialResponseDTO> obtenerCredencialPorUsername(@PathVariable String username) {
 		CredencialResponseDTO credencialDTO = new CredencialResponseDTO(
 				credencialServiceImpl.buscarCredencialPorUsername(username));
 		return ResponseEntity.ok(credencialDTO);
 	}
 
-	@GetMapping("/credencial/getById/{id}")
+	@GetMapping("/credenciales/getById/{id}")
 	public ResponseEntity<CredencialResponseDTO> obtenerCredencialPorId(@PathVariable Long id) {
 		CredencialResponseDTO credencialDTO = new CredencialResponseDTO(
 				credencialServiceImpl.buscarCredencialPorId(id));
 		return ResponseEntity.ok(credencialDTO);
 	}
 
-	@PostMapping("/credencial/guardar")
+	@PostMapping("/credenciales/guardar")
 	public ResponseEntity<CredencialResponseDTO> guardarCredencial(
 			@Valid @RequestBody CredencialRequestDTO credencialRequestDTO) {
 		return ResponseEntity.status(HttpStatus.CREATED)
