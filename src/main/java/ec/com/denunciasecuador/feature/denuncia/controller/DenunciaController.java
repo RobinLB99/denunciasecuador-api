@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
-@RequestMapping("/denuncia")
+@RequestMapping("/denuncias")
 public class DenunciaController {
 
 	private DenunciaServiceImpl denunciaServiceImpl;
@@ -42,7 +42,7 @@ public class DenunciaController {
 				.ok(denunciaServiceImpl.obtenerDenunciasPorNumeroIdentidadUsuario(identityNumber, numPage, pageSize));
 	}
 
-	@PostMapping("/denuncias/guardar_denuncia")
+	@PostMapping("/guardar_denuncia")
 	public ResponseEntity<DenunciaResponseDTO> guardarDenuncia(
 			@Valid @RequestBody DenunciaRequestDTO denunciaRequestDTO) {
 		DenunciaResponseDTO denunciaResponseDTO = crearDenunciaResponseDTO(

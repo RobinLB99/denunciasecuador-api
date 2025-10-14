@@ -28,42 +28,45 @@ public class DenunciaServiceImpl implements DenunciaService {
 	}
 
 	@Override
+	@Transactional
 	public Denuncia guardarDenuncia(DenunciaRequestDTO denunciaRequestDTO) {
 		Usuario usuario = usuarioRepository.findById(denunciaRequestDTO.getUsuario_id())
-				.orElseThrow(() -> new UsuarioNotFoundException(
-						"No se encontro el usuario con el ID: " + denunciaRequestDTO.getUsuario_id()));
+				.orElseThrow(() -> new UsuarioNotFoundException("No se encontro el usuario con el ID '"
+						+ denunciaRequestDTO.getUsuario_id() + "', por lo tanto, la denuncia no se guarda."));
 		return denunciaRepository.save(crearObjetoDenuncia(denunciaRequestDTO, usuario));
 	}
 
 	@Override
+	@Transactional
 	public void eliminarDenuncia(Denuncia denuncia) {
 		denunciaRepository.delete(denuncia);
 	}
 
 	@Override
+	@Transactional
 	public void eliminarDenunciaPorId(Long id) {
 		if (!denunciaRepository.existsById(id))
 			throw new DenunciaNotFoundException("La denuncia con ID " + id + " no existe.");
 		denunciaRepository.deleteById(id);
 	}
 
-	@Transactional(readOnly = true)
 	@Override
+	@Transactional(readOnly = true)
 	public Denuncia obtenerDenunciaPorId(Long id) {
 		return denunciaRepository.findById(id)
 				.orElseThrow(() -> new DenunciaNotFoundException("No se encontro la denuncia con el ID: " + id));
 	}
 
-	@Transactional(readOnly = true)
 	@Override
+	@Transactional(readOnly = true)
 	public Page<Denuncia> obtenerDenunciasPorNumeroIdentidadUsuario(String numeroIdentidad, int pagina,
 			int tamanioPagina) {
 		Pageable pageable = PageRequest.of(pagina, tamanioPagina, Sort.by("title"));
 		return denunciaRepository.findDenunciasByIdentityNumberUsuario(numeroIdentidad, pageable);
 	}
 
-	@Transactional(readOnly = true)
 	@Override
+	@Transactional(readOnly = true)
 	public Page<Denuncia> obtenerTodasLasDenuncias(int pagina, int tamanioPagina) {
 		Pageable pageable = PageRequest.of(pagina, tamanioPagina, Sort.by("title"));
 		return denunciaRepository.findAll(pageable);

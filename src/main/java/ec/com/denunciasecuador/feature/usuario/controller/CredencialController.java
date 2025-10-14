@@ -39,7 +39,7 @@ public class CredencialController {
 		return ResponseEntity.ok(credencialDTO);
 	}
 
-	@PostMapping("/credenciales/guardar")
+	@PostMapping("/credenciales/guardar_credencial")
 	public ResponseEntity<CredencialResponseDTO> guardarCredencial(
 			@Valid @RequestBody CredencialRequestDTO credencialRequestDTO) {
 		return ResponseEntity.status(HttpStatus.CREATED)

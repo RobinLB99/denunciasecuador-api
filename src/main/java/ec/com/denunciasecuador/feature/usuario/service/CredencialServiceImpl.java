@@ -24,6 +24,7 @@ public class CredencialServiceImpl implements CredencialService {
 	}
 
 	@Override
+	@Transactional
 	public Credencial guardarCredencial(CredencialRequestDTO credencialRequestDTO) {
 		Credencial credencial = new Credencial();
 		credencial.setUsername(credencialRequestDTO.getUsername());
@@ -33,32 +34,34 @@ public class CredencialServiceImpl implements CredencialService {
 	}
 
 	@Override
+	@Transactional
 	public void eliminarCredencialPorId(Long id) {
 		credencialRepository.deleteById(id);
 	}
 
 	@Override
+	@Transactional
 	public void eliminarCredencial(Credencial credencial) {
 		credencialRepository.delete(credencial);
 	}
 
-	@Transactional(readOnly = true)
 	@Override
+	@Transactional(readOnly = true)
 	public Credencial buscarCredencialPorId(Long id) {
 		return credencialRepository.findById(id).orElseThrow(
 				() -> new CredencialNotFoundException("No se encontro la credencial el número de id: " + id));
 	}
 
-	@Transactional(readOnly = true)
 	@Override
+	@Transactional(readOnly = true)
 	public Credencial buscarCredencialPorUsername(String username) {
 		return credencialRepository.findCredencialByUsername(username)
 				.orElseThrow(() -> new CredencialNotFoundException(
 						"No se encontro la credencial con el nombre de usuario: " + username));
 	}
 
-	@Transactional(readOnly = true)
 	@Override
+	@Transactional(readOnly = true)
 	public Page<Credencial> obtenerCredencialesPaginadas(int numeroPagina, int tamanioPagina) {
 		Pageable pageable = PageRequest.of(numeroPagina, tamanioPagina, Sort.by("username").ascending());
 		return credencialRepository.findAll(pageable);

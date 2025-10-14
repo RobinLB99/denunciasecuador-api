@@ -7,7 +7,7 @@ services:
     container_name: denuncias-app
     ports:
       # Mapea el puerto 8080 del contenedor al 8080 de la máquina host
-      - "8085:8085"
+      - "8080:8080"
     # Carga las variables de entorno desde el archivo .env
     env_file:
       - .env

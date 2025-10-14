@@ -28,6 +28,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
+	@Transactional
 	public Usuario guardarUsuario(UsuarioRequestDTO usuarioRequestDTO) {
 		Credencial credencial = credencialRepository.findById(usuarioRequestDTO.getIdCredencial())
 				.orElseThrow(() -> new CredencialNotFoundException(
@@ -44,32 +45,34 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 	@Override
+	@Transactional
 	public void eliminarUsuarioPorId(Long id) {
 		usuarioRepository.deleteById(id);
 	}
 
 	@Override
+	@Transactional
 	public void eliminarUsuario(Usuario usuario) {
 		usuarioRepository.delete(usuario);
 	}
 
-	@Transactional(readOnly = true)
 	@Override
+	@Transactional(readOnly = true)
 	public Usuario buscarUsuarioPorId(Long id) {
 		return usuarioRepository.findById(id)
 				.orElseThrow(() -> new UsuarioNotFoundException("No se encontro el usuario con el id: " + id));
 	}
 
-	@Transactional(readOnly = true)
 	@Override
+	@Transactional(readOnly = true)
 	public Usuario buscarUsuarioPorNumeroIdentidad(String numeroIdentidad) {
 		return usuarioRepository.findUsuarioByIdentityNumber(numeroIdentidad)
 				.orElseThrow(() -> new UsuarioNotFoundException(
 						"No se encontro el usuario con el número de identidad: " + numeroIdentidad));
 	}
 
-	@Transactional(readOnly = true)
 	@Override
+	@Transactional(readOnly = true)
 	public Page<Usuario> obtenerUsuariosPaginados(int numeroPagina, int tamanioPagina) {
 		Pageable pageable = PageRequest.of(numeroPagina, tamanioPagina, Sort.by("surnames").ascending());
 		return usuarioRepository.findAll(pageable);
