@@ -2,7 +2,6 @@ package ec.com.denunciasecuador.feature.usuario.model;
 
 import java.io.Serializable;
 
-import ec.com.denunciasecuador.feature.usuario.dto.UsuarioRequestDTO;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -63,12 +62,5 @@ public class Usuario implements Serializable {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "credential_id", referencedColumnName = "credentials_id", nullable = false)
 	private Credencial credential;
-	
-	public Usuario(UsuarioRequestDTO usuarioRequestDTO) {
-		this.firstName = usuarioRequestDTO.getFirstName();
-		this.middleName = usuarioRequestDTO.getMiddleName();
-		this.surnames = usuarioRequestDTO.getSurnames();
-		this.identityNumber = usuarioRequestDTO.getIdentityNumber();
-	}
 
 }

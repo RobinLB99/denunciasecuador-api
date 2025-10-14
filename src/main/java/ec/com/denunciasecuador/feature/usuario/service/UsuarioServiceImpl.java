@@ -33,7 +33,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 				.orElseThrow(() -> new CredencialNotFoundException(
 						"No se encontró la credencial con el id: " + usuarioRequestDTO.getIdCredencial()));
 
-		Usuario usuario = new Usuario(usuarioRequestDTO);
+		Usuario usuario = new Usuario();
+		usuario.setFirstName(usuarioRequestDTO.getFirstName());
+		usuario.setMiddleName(usuarioRequestDTO.getMiddleName());
+		usuario.setSurnames(usuarioRequestDTO.getSurnames());
+		usuario.setIdentityNumber(usuarioRequestDTO.getIdentityNumber());
 		usuario.setCredential(credencial);
 
 		return usuarioRepository.save(usuario);
