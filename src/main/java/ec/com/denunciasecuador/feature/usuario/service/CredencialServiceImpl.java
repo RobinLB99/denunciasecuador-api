@@ -18,7 +18,7 @@ public class CredencialServiceImpl implements CredencialService {
 
 	private CredencialRepository credencialRepository;
 
-	private CredencialServiceImpl(CredencialRepository credencialRepository) {
+	public CredencialServiceImpl(CredencialRepository credencialRepository) {
 		this.credencialRepository = credencialRepository;
 	}
 
@@ -27,7 +27,7 @@ public class CredencialServiceImpl implements CredencialService {
 		Credencial credencial = new Credencial();
 		credencial.setUsername(credencialRequestDTO.getUsername());
 		// Encripta la contraseña y la inyecta en el objeto Credencial
-		credencial.setPassword(PasswordEncryptor.encryptPassword(credencialRequestDTO.getPasswordString()));
+		credencial.setPassword(PasswordEncryptor.encryptPassword(credencialRequestDTO.getPassword()));
 		return credencialRepository.save(credencial);
 	}
 

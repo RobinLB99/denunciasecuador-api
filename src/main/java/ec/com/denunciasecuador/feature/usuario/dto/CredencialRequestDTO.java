@@ -22,6 +22,6 @@ public class CredencialRequestDTO {
 	@Nonnull
 	@NotBlank(message = "{PASSWORD.NOTBLANK}")
 	@Size(min = 8, max = 16, message = "{PASSWORD.SIZE}")
-	private String passwordString;
+	private String password;
 	
 }
