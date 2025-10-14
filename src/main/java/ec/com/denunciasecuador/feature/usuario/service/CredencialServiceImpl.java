@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ec.com.denunciasecuador.common.exception.entitynotfound.CredencialNotFoundException;
 import ec.com.denunciasecuador.common.util.PasswordEncryptor;
@@ -41,12 +42,14 @@ public class CredencialServiceImpl implements CredencialService {
 		credencialRepository.delete(credencial);
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public Credencial buscarCredencialPorId(Long id) {
 		return credencialRepository.findById(id).orElseThrow(
 				() -> new CredencialNotFoundException("No se encontro la credencial el número de id: " + id));
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public Credencial buscarCredencialPorUsername(String username) {
 		return credencialRepository.findCredencialByUsername(username)
@@ -54,6 +57,7 @@ public class CredencialServiceImpl implements CredencialService {
 						"No se encontro la credencial con el nombre de usuario: " + username));
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public Page<Credencial> obtenerCredencialesPaginadas(int numeroPagina, int tamanioPagina) {
 		Pageable pageable = PageRequest.of(numeroPagina, tamanioPagina, Sort.by("username").ascending());

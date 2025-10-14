@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ec.com.denunciasecuador.feature.usuario.dto.UsuarioRequestDTO;
 import ec.com.denunciasecuador.feature.usuario.dto.UsuarioResponseDTO;
+import ec.com.denunciasecuador.feature.usuario.model.Usuario;
 import ec.com.denunciasecuador.feature.usuario.service.UsuarioServiceImpl;
 import jakarta.validation.Valid;
 
@@ -24,22 +25,30 @@ public class UsuarioController {
 		this.usuarioServiceImpl = usuarioServiceImpl;
 	}
 
+	private UsuarioResponseDTO crearuUsuarioResponseDTO(Usuario usuario) {
+		UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO();
+		usuarioResponseDTO.setFirstName(usuario.getFirstName());
+		usuarioResponseDTO.setSurnames(usuario.getSurnames());
+		usuarioResponseDTO.setUsername(usuario.getCredential().getUsername());
+		return usuarioResponseDTO;
+	}
+
 	@GetMapping("/getByCI/{numeroIdentidad}")
 	public ResponseEntity<UsuarioResponseDTO> obtenerUsuarioPorNumeroIdentidad(@PathVariable String numeroIdentidad) {
-		UsuarioResponseDTO usuarioDTO = usuarioServiceImpl.buscarUsuarioPorNumeroIdentidad(numeroIdentidad);
+		UsuarioResponseDTO usuarioDTO = crearuUsuarioResponseDTO(
+				usuarioServiceImpl.buscarUsuarioPorNumeroIdentidad(numeroIdentidad));
 		return ResponseEntity.ok(usuarioDTO);
 	}
 
 	@GetMapping("/getById/{id}")
 	public ResponseEntity<UsuarioResponseDTO> obtenerUsuarioPorId(@PathVariable Long id) {
-		UsuarioResponseDTO usuarioDTO = usuarioServiceImpl.buscarUsuarioPorId(id);
+		UsuarioResponseDTO usuarioDTO = crearuUsuarioResponseDTO(usuarioServiceImpl.buscarUsuarioPorId(id));
 		return ResponseEntity.ok(usuarioDTO);
 	}
 
 	@PostMapping("/guardar")
 	public ResponseEntity<UsuarioResponseDTO> guardarUsuario(@Valid @RequestBody UsuarioRequestDTO usuarioRequestDTO) {
-		UsuarioResponseDTO usuarioDTO = 
-				new UsuarioResponseDTO(usuarioServiceImpl.guardarUsuario(usuarioRequestDTO));
+		UsuarioResponseDTO usuarioDTO = crearuUsuarioResponseDTO(usuarioServiceImpl.guardarUsuario(usuarioRequestDTO));
 		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
 	}
 

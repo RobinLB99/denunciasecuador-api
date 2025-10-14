@@ -5,10 +5,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ec.com.denunciasecuador.common.exception.entitynotfound.UsuarioNotFoundException;
 import ec.com.denunciasecuador.feature.usuario.dto.UsuarioRequestDTO;
-import ec.com.denunciasecuador.feature.usuario.dto.UsuarioResponseDTO;
 import ec.com.denunciasecuador.feature.usuario.model.Usuario;
 import ec.com.denunciasecuador.feature.usuario.repository.UsuarioRepository;
 import ec.com.denunciasecuador.feature.usuario.service.contract.UsuarioService;
@@ -53,21 +53,22 @@ public class UsuarioServiceImpl implements UsuarioService {
 		usuarioRepository.delete(usuario);
 	}
 
+	@Transactional(readOnly = true)
 	@Override
-	public UsuarioResponseDTO buscarUsuarioPorId(Long id) {
-		Usuario usuario = usuarioRepository.findById(id)
+	public Usuario buscarUsuarioPorId(Long id) {
+		return usuarioRepository.findById(id)
 				.orElseThrow(() -> new UsuarioNotFoundException("No se encontro el usuario con el id: " + id));
-		return new UsuarioResponseDTO(usuario);
 	}
 
+	@Transactional(readOnly = true)
 	@Override
-	public UsuarioResponseDTO buscarUsuarioPorNumeroIdentidad(String numeroIdentidad) {
-		Usuario usuario = usuarioRepository.findUsuarioByIdentityNumber(numeroIdentidad)
+	public Usuario buscarUsuarioPorNumeroIdentidad(String numeroIdentidad) {
+		return usuarioRepository.findUsuarioByIdentityNumber(numeroIdentidad)
 				.orElseThrow(() -> new UsuarioNotFoundException(
 						"No se encontro el usuario con el número de identidad: " + numeroIdentidad));
-		return new UsuarioResponseDTO(usuario);
 	}
 
+	@Transactional(readOnly = true)
 	@Override
 	public Page<Usuario> obtenerUsuariosPaginados(int numeroPagina, int tamanioPagina) {
 		Pageable pageable = PageRequest.of(numeroPagina, tamanioPagina, Sort.by("surnames").ascending());
