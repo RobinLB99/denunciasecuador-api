@@ -1,0 +1,49 @@
+src/main/java
+└── ec
+    └── com
+        └── denunciasecuador
+            ├── DenunciasecuadorApplication.java
+            ├── common
+            │   ├── exception
+            │   │   ├── entitynotfound
+            │   │   │   ├── CredencialNotFoundException.java
+            │   │   │   └── UsuarioNotFoundException.java
+            │   │   └── other
+            │   └── util
+            │       └── PasswordEncryptor.java
+            ├── config
+            └── feature
+                ├── denuncia
+                │   ├── controller
+                │   ├── dto
+                │   ├── model
+                │   │   ├── Denuncia.java
+                │   │   └── constant
+                │   │       └── TipoDenuncia.java
+                │   ├── repository
+                │   │   └── DenunciaRepository.java
+                │   └── service
+                ├── security
+                │   ├── controller
+                │   ├── dto
+                │   ├── jwt
+                │   └── service
+                └── usuario
+                    ├── controller
+                    │   ├── CredencialController.java
+                    │   └── UsuarioController.java
+                    ├── dto
+                    │   ├── CredencialDTO.java
+                    │   └── UsuarioDTO.java
+                    ├── model
+                    │   ├── Credencial.java
+                    │   └── Usuario.java
+                    ├── repository
+                    │   ├── CredencialRepository.java
+                    │   └── UsuarioRepository.java
+                    └── service
+                        ├── CredencialServiceImpl.java
+                        ├── UsuarioServiceImpl.java
+                        └── contract
+                            ├── CredencialService.java
+                            └── UsuarioService.java

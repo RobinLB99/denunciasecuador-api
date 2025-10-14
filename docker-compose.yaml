@@ -1,0 +1,42 @@
+services:
+  # Servicio de la aplicación Spring Boot
+  app:
+    # Construye la imagen a partir del Dockerfile en el directorio actual
+    build: .
+    # Nombre del contenedor para fácil identificación
+    container_name: denuncias-app
+    ports:
+      # Mapea el puerto 8080 del contenedor al 8080 de la máquina host
+      - "8085:8085"
+    # Carga las variables de entorno desde el archivo .env
+    env_file:
+      - .env
+    # Monta el código fuente y las clases compiladas para hot-reloading
+    volumes:
+      - ./src:/app/src
+      - ./target:/app/target
+    # Asegura que el servicio de mariadb se inicie antes que la aplicación
+    depends_on:
+      - mariadb
+
+  # Servicio de la Base de Datos MariaDB
+  mariadb:
+    image: "mariadb:12-noble"
+    container_name: denuncias-db
+    ports:
+      # Mapea el puerto 3306 del contenedor al 3306 de la máquina host
+      - "3306:3306"
+    # Carga las variables de entorno para la configuración de la BD
+    # Estas deben coincidir con las usadas por la aplicación en el .env
+    environment:
+      - MARIADB_DATABASE=${DB_DATABASE}
+      - MARIADB_USER=${DB_USERNAME}
+      - MARIADB_PASSWORD=${DB_PASSWORD}
+      - MARIADB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+    # Define un volumen para que los datos de la BD persistan
+    volumes:
+      - mariadb_data:/var/lib/mysql
+
+# Define el volumen nombrado para la persistencia de datos de MariaDB
+volumes:
+  mariadb_data:
