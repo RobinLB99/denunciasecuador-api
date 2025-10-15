@@ -27,29 +27,22 @@ public class UsuarioController {
 
 	@GetMapping("/getByCI/{numeroIdentidad}")
 	public ResponseEntity<UsuarioResponseDTO> obtenerUsuarioPorNumeroIdentidad(@PathVariable String numeroIdentidad) {
-		UsuarioResponseDTO usuarioDTO = crearuUsuarioResponseDTO(
-				usuarioServiceImpl.buscarUsuarioPorNumeroIdentidad(numeroIdentidad));
+		UsuarioResponseDTO usuarioDTO = usuarioServiceImpl
+				.mapperUsuarioDTO(usuarioServiceImpl.buscarUsuarioPorNumeroIdentidad(numeroIdentidad));
 		return ResponseEntity.ok(usuarioDTO);
 	}
 
 	@GetMapping("/getById/{id}")
 	public ResponseEntity<UsuarioResponseDTO> obtenerUsuarioPorId(@PathVariable Long id) {
-		UsuarioResponseDTO usuarioDTO = crearuUsuarioResponseDTO(usuarioServiceImpl.buscarUsuarioPorId(id));
+		UsuarioResponseDTO usuarioDTO = usuarioServiceImpl.mapperUsuarioDTO(usuarioServiceImpl.buscarUsuarioPorId(id));
 		return ResponseEntity.ok(usuarioDTO);
 	}
 
 	@PostMapping("/guardar_usuario")
 	public ResponseEntity<UsuarioResponseDTO> guardarUsuario(@Valid @RequestBody UsuarioRequestDTO usuarioRequestDTO) {
-		UsuarioResponseDTO usuarioDTO = crearuUsuarioResponseDTO(usuarioServiceImpl.guardarUsuario(usuarioRequestDTO));
-		return ResponseEntity.status(HttpStatus.CREATED).body(usuarioDTO);
-	}
-
-	private UsuarioResponseDTO crearuUsuarioResponseDTO(Usuario usuario) {
-		UsuarioResponseDTO usuarioResponseDTO = new UsuarioResponseDTO();
-		usuarioResponseDTO.setFirstName(usuario.getFirstName());
-		usuarioResponseDTO.setSurnames(usuario.getSurnames());
-		usuarioResponseDTO.setUsername(usuario.getCredential().getUsername());
-		return usuarioResponseDTO;
+		Usuario usuario = usuarioServiceImpl.mapperDTOUsuario(usuarioRequestDTO);
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(usuarioServiceImpl.mapperUsuarioDTO(usuarioServiceImpl.guardarUsuario(usuario)));
 	}
 
 }

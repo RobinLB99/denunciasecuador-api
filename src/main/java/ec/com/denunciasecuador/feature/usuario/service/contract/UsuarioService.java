@@ -2,12 +2,11 @@ package ec.com.denunciasecuador.feature.usuario.service.contract;
 
 import org.springframework.data.domain.Page;
 
-import ec.com.denunciasecuador.feature.usuario.dto.UsuarioRequestDTO;
 import ec.com.denunciasecuador.feature.usuario.model.Usuario;
 
 public interface UsuarioService {
 
-	public Usuario guardarUsuario(UsuarioRequestDTO usuarioRequestDTO);
+	public Usuario guardarUsuario(Usuario usuario);
 
 	public void eliminarUsuarioPorId(Long id);
 

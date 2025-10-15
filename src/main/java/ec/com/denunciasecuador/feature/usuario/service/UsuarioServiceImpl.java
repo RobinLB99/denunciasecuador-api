@@ -12,35 +12,39 @@ import ec.com.denunciasecuador.feature.usuario.dto.UsuarioRequestDTO;
 import ec.com.denunciasecuador.feature.usuario.model.Usuario;
 import ec.com.denunciasecuador.feature.usuario.repository.UsuarioRepository;
 import ec.com.denunciasecuador.feature.usuario.service.contract.UsuarioService;
-import ec.com.denunciasecuador.common.exception.entitynotfound.CredencialNotFoundException;
-import ec.com.denunciasecuador.feature.usuario.model.Credencial;
-import ec.com.denunciasecuador.feature.usuario.repository.CredencialRepository;
+import ec.com.denunciasecuador.feature.usuario.dto.UsuarioResponseDTO;
+//import ec.com.denunciasecuador.feature.usuario.repository.CredencialRepository;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
 	private final UsuarioRepository usuarioRepository;
-	private final CredencialRepository credencialRepository;
+//	private final CredencialRepository credencialRepository;
 
-	public UsuarioServiceImpl(UsuarioRepository usuarioRepository, CredencialRepository credencialRepository) {
+	public UsuarioServiceImpl(
+			UsuarioRepository usuarioRepository
+//			, CredencialRepository credencialRepository
+			) {
 		this.usuarioRepository = usuarioRepository;
-		this.credencialRepository = credencialRepository;
+//		this.credencialRepository = credencialRepository;
+	}
+
+	public Usuario mapperDTOUsuario(UsuarioRequestDTO usuarioDTO) {
+		Usuario usuario = new Usuario();
+		usuario.setFirstName(usuarioDTO.getFirstName());
+		usuario.setMiddleName(usuarioDTO.getMiddleName());
+		usuario.setSurnames(usuarioDTO.getSurnames());
+		usuario.setIdentityNumber(usuarioDTO.getIdentityNumber());
+		return usuario;
+	}
+	
+	public UsuarioResponseDTO mapperUsuarioDTO(Usuario usuario) {
+		return null;
 	}
 
 	@Override
 	@Transactional
-	public Usuario guardarUsuario(UsuarioRequestDTO usuarioRequestDTO) {
-		Credencial credencial = credencialRepository.findById(usuarioRequestDTO.getIdCredencial())
-				.orElseThrow(() -> new CredencialNotFoundException(
-						"No se encontró la credencial con el id: " + usuarioRequestDTO.getIdCredencial()));
-
-		Usuario usuario = new Usuario();
-		usuario.setFirstName(usuarioRequestDTO.getFirstName());
-		usuario.setMiddleName(usuarioRequestDTO.getMiddleName());
-		usuario.setSurnames(usuarioRequestDTO.getSurnames());
-		usuario.setIdentityNumber(usuarioRequestDTO.getIdentityNumber());
-		usuario.setCredential(credencial);
-
+	public Usuario guardarUsuario(Usuario usuario) {
 		return usuarioRepository.save(usuario);
 	}
 
