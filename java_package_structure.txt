@@ -4,9 +4,11 @@ src/main/java
         └── denunciasecuador
             ├── DenunciasecuadorApplication.java
             ├── common
+            │   ├── constant
             │   ├── exception
             │   │   ├── entitynotfound
             │   │   │   ├── CredencialNotFoundException.java
+            │   │   │   ├── DenunciaNotFoundException.java
             │   │   │   └── UsuarioNotFoundException.java
             │   │   └── other
             │   └── util
@@ -15,7 +17,10 @@ src/main/java
             └── feature
                 ├── denuncia
                 │   ├── controller
+                │   │   └── DenunciaController.java
                 │   ├── dto
+                │   │   ├── DenunciaRequestDTO.java
+                │   │   └── DenunciaResponseDTO.java
                 │   ├── model
                 │   │   ├── Denuncia.java
                 │   │   └── constant
@@ -23,6 +28,21 @@ src/main/java
                 │   ├── repository
                 │   │   └── DenunciaRepository.java
                 │   └── service
+                │       ├── DenunciaDTOServiceImpl.java
+                │       ├── DenunciaServiceImpl.java
+                │       └── contract
+                │           ├── DenunciaDTOService.java
+                │           └── DenunciaService.java
+                ├── registro
+                │   ├── controller
+                │   │   └── RegistroController.java
+                │   ├── dto
+                │   │   ├── RegistroRequestDTO.java
+                │   │   └── RegistroResponseDTO.java
+                │   └── service
+                │       ├── RegistroServiceImpl.java
+                │       └── contract
+                │           └── RegistroService.java
                 ├── security
                 │   ├── controller
                 │   ├── dto
@@ -33,8 +53,10 @@ src/main/java
                     │   ├── CredencialController.java
                     │   └── UsuarioController.java
                     ├── dto
-                    │   ├── CredencialDTO.java
-                    │   └── UsuarioDTO.java
+                    │   ├── CredencialRequestDTO.java
+                    │   ├── CredencialResponseDTO.java
+                    │   ├── UsuarioRequestDTO.java
+                    │   └── UsuarioResponseDTO.java
                     ├── model
                     │   ├── Credencial.java
                     │   └── Usuario.java

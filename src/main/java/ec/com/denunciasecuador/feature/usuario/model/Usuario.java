@@ -32,7 +32,8 @@ public class Usuario implements Serializable {
 
 	@Column(name = "surnames", nullable = false, length = 100)
 	private String surnames;
-	@Column(name = "identity_number", nullable = false, length = 10)
+	
+	@Column(name = "identity_number", unique = true, nullable = false, length = 10)
 	private String identityNumber;
 
 	@OneToOne(cascade = CascadeType.ALL)
