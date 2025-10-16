@@ -38,8 +38,11 @@ public class UsuarioServiceImpl implements UsuarioService {
 		return usuario;
 	}
 	
-	public UsuarioResponseDTO mapperUsuarioDTO(Usuario usuario) {
-		return null;
+	public UsuarioResponseDTO crearUsuarioResponseDTO(Usuario usuario) {
+		return new UsuarioResponseDTO(
+				usuario.getFirstName(),
+				usuario.getSurnames(),
+				usuario.getCredential().getUsername());
 	}
 
 	@Override

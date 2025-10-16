@@ -28,13 +28,13 @@ public class UsuarioController {
 	@GetMapping("/getByCI/{numeroIdentidad}")
 	public ResponseEntity<UsuarioResponseDTO> obtenerUsuarioPorNumeroIdentidad(@PathVariable String numeroIdentidad) {
 		UsuarioResponseDTO usuarioDTO = usuarioServiceImpl
-				.mapperUsuarioDTO(usuarioServiceImpl.buscarUsuarioPorNumeroIdentidad(numeroIdentidad));
+				.crearUsuarioResponseDTO(usuarioServiceImpl.buscarUsuarioPorNumeroIdentidad(numeroIdentidad));
 		return ResponseEntity.ok(usuarioDTO);
 	}
 
 	@GetMapping("/getById/{id}")
 	public ResponseEntity<UsuarioResponseDTO> obtenerUsuarioPorId(@PathVariable Long id) {
-		UsuarioResponseDTO usuarioDTO = usuarioServiceImpl.mapperUsuarioDTO(usuarioServiceImpl.buscarUsuarioPorId(id));
+		UsuarioResponseDTO usuarioDTO = usuarioServiceImpl.crearUsuarioResponseDTO(usuarioServiceImpl.buscarUsuarioPorId(id));
 		return ResponseEntity.ok(usuarioDTO);
 	}
 
@@ -42,7 +42,7 @@ public class UsuarioController {
 	public ResponseEntity<UsuarioResponseDTO> guardarUsuario(@Valid @RequestBody UsuarioRequestDTO usuarioRequestDTO) {
 		Usuario usuario = usuarioServiceImpl.mapperDTOUsuario(usuarioRequestDTO);
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(usuarioServiceImpl.mapperUsuarioDTO(usuarioServiceImpl.guardarUsuario(usuario)));
+				.body(usuarioServiceImpl.crearUsuarioResponseDTO(usuarioServiceImpl.guardarUsuario(usuario)));
 	}
 
 }
