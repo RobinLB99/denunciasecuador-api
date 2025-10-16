@@ -53,10 +53,10 @@ public class CredencialController {
     public ResponseEntity<CredencialResponseDTO> obtenerCredencialPorUsername(
         @PathVariable String username
     ) {
+        Credencial credencial =
+            credencialServiceImpl.buscarCredencialPorUsername(username);
         CredencialResponseDTO credencialDTO =
-            credencialServiceImpl.crearCResponseDTO(
-                credencialServiceImpl.buscarCredencialPorUsername(username)
-            );
+            credencialServiceImpl.crearCResponseDTO(credencial);
         return ResponseEntity.ok(credencialDTO);
     }
 
@@ -74,10 +74,9 @@ public class CredencialController {
     public ResponseEntity<CredencialResponseDTO> obtenerCredencialPorId(
         @PathVariable Long id
     ) {
+        Credencial credencial = credencialServiceImpl.buscarCredencialPorId(id);
         CredencialResponseDTO credencialDTO =
-            credencialServiceImpl.crearCResponseDTO(
-                credencialServiceImpl.buscarCredencialPorId(id)
-            );
+            credencialServiceImpl.crearCResponseDTO(credencial);
         return ResponseEntity.ok(credencialDTO);
     }
 
@@ -99,8 +98,8 @@ public class CredencialController {
         Credencial credencial = credencialServiceImpl.guardarCredencial(
             credencialRequestDTO
         );
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-            credencialServiceImpl.crearCResponseDTO(credencial)
-        );
+        CredencialResponseDTO credencialDTO =
+            credencialServiceImpl.crearCResponseDTO(credencial);
+        return ResponseEntity.status(HttpStatus.CREATED).body(credencialDTO);
     }
 }
