@@ -27,9 +27,9 @@ public class RegistroServiceImpl implements RegistroService {
 	@Override
 	@Transactional
 	public Usuario registrarNuevoUsuario(RegistroRequestDTO registroDTO) {
-		CredencialRequestDTO credencial = new CredencialRequestDTO();
-		credencial.setUsername(registroDTO.username());
-		credencial.setPassword(PasswordEncryptor.encryptPassword(registroDTO.password()));
+		CredencialRequestDTO credencial = new CredencialRequestDTO(
+				registroDTO.username(),
+				PasswordEncryptor.encryptPassword(registroDTO.password()));
 
 		Credencial newCredencial = credencialServiceImpl.guardarCredencial(credencial);
 
