@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ec.com.denunciasecuador.feature.usuario.dto.CredencialRequestDTO;
 import ec.com.denunciasecuador.feature.usuario.dto.CredencialResponseDTO;
+import ec.com.denunciasecuador.feature.usuario.model.Credencial;
 import ec.com.denunciasecuador.feature.usuario.service.CredencialServiceImpl;
 import jakarta.validation.Valid;
 
@@ -27,14 +28,14 @@ public class CredencialController {
 
 	@GetMapping("/credenciales/getByUsername/{username}")
 	public ResponseEntity<CredencialResponseDTO> obtenerCredencialPorUsername(@PathVariable String username) {
-		CredencialResponseDTO credencialDTO = new CredencialResponseDTO(
-				credencialServiceImpl.buscarCredencialPorUsername(username));
+		CredencialResponseDTO credencialDTO = credencialServiceImpl.crearCResponseDTO(
+						credencialServiceImpl.buscarCredencialPorUsername(username));
 		return ResponseEntity.ok(credencialDTO);
 	}
 
 	@GetMapping("/credenciales/getById/{id}")
 	public ResponseEntity<CredencialResponseDTO> obtenerCredencialPorId(@PathVariable Long id) {
-		CredencialResponseDTO credencialDTO = new CredencialResponseDTO(
+		CredencialResponseDTO credencialDTO = credencialServiceImpl.crearCResponseDTO(
 				credencialServiceImpl.buscarCredencialPorId(id));
 		return ResponseEntity.ok(credencialDTO);
 	}
@@ -42,8 +43,9 @@ public class CredencialController {
 	@PostMapping("/credenciales/guardar_credencial")
 	public ResponseEntity<CredencialResponseDTO> guardarCredencial(
 			@Valid @RequestBody CredencialRequestDTO credencialRequestDTO) {
+		Credencial credencial = credencialServiceImpl.guardarCredencial(credencialRequestDTO);
 		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(new CredencialResponseDTO(credencialServiceImpl.guardarCredencial(credencialRequestDTO)));
+				.body(credencialServiceImpl.crearCResponseDTO(credencial));
 	}
 
 }

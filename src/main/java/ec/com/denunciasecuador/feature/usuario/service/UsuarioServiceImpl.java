@@ -31,10 +31,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	public Usuario mapperDTOUsuario(UsuarioRequestDTO usuarioDTO) {
 		Usuario usuario = new Usuario();
-		usuario.setFirstName(usuarioDTO.getFirstName());
-		usuario.setMiddleName(usuarioDTO.getMiddleName());
-		usuario.setSurnames(usuarioDTO.getSurnames());
-		usuario.setIdentityNumber(usuarioDTO.getIdentityNumber());
+		usuario.setFirstName(usuarioDTO.firstName());
+		usuario.setMiddleName(usuarioDTO.middleName());
+		usuario.setSurnames(usuarioDTO.surnames());
+		usuario.setIdentityNumber(usuarioDTO.identityNumber());
 		return usuario;
 	}
 	

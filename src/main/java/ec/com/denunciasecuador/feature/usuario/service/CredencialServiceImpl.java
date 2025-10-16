@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ec.com.denunciasecuador.common.exception.entitynotfound.CredencialNotFoundException;
 import ec.com.denunciasecuador.common.util.PasswordEncryptor;
 import ec.com.denunciasecuador.feature.usuario.dto.CredencialRequestDTO;
+import ec.com.denunciasecuador.feature.usuario.dto.CredencialResponseDTO;
 import ec.com.denunciasecuador.feature.usuario.model.Credencial;
 import ec.com.denunciasecuador.feature.usuario.repository.CredencialRepository;
 import ec.com.denunciasecuador.feature.usuario.service.contract.CredencialService;
@@ -27,9 +28,9 @@ public class CredencialServiceImpl implements CredencialService {
 	@Transactional
 	public Credencial guardarCredencial(CredencialRequestDTO credencialRequestDTO) {
 		Credencial credencial = new Credencial();
-		credencial.setUsername(credencialRequestDTO.getUsername());
+		credencial.setUsername(credencialRequestDTO.username());
 		// Encripta la contraseña y la inyecta en el objeto Credencial
-		credencial.setPassword(PasswordEncryptor.encryptPassword(credencialRequestDTO.getPassword()));
+		credencial.setPassword(PasswordEncryptor.encryptPassword(credencialRequestDTO.password()));
 		return credencialRepository.save(credencial);
 	}
 
@@ -65,6 +66,12 @@ public class CredencialServiceImpl implements CredencialService {
 	public Page<Credencial> obtenerCredencialesPaginadas(int numeroPagina, int tamanioPagina) {
 		Pageable pageable = PageRequest.of(numeroPagina, tamanioPagina, Sort.by("username").ascending());
 		return credencialRepository.findAll(pageable);
+	}
+	
+	public CredencialResponseDTO crearCResponseDTO(Credencial credencial) {
+		return new CredencialResponseDTO(
+				credencial.getId(),
+				credencial.getUsername());
 	}
 
 }

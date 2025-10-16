@@ -28,28 +28,27 @@ public class RegistroServiceImpl implements RegistroService {
 	@Transactional
 	public Usuario registrarNuevoUsuario(RegistroRequestDTO registroDTO) {
 		CredencialRequestDTO credencial = new CredencialRequestDTO();
-		credencial.setUsername(registroDTO.getUsername());
-		credencial.setPassword(PasswordEncryptor.encryptPassword(registroDTO.getPassword()));
+		credencial.setUsername(registroDTO.username());
+		credencial.setPassword(PasswordEncryptor.encryptPassword(registroDTO.password()));
 
 		Credencial newCredencial = credencialServiceImpl.guardarCredencial(credencial);
 
 		Usuario usuario = new Usuario();
-		usuario.setFirstName(registroDTO.getFirstName());
-		usuario.setMiddleName(registroDTO.getMiddleName());
-		usuario.setSurnames(registroDTO.getSurnames());
-		usuario.setIdentityNumber(registroDTO.getIdentityNumber());
+		usuario.setFirstName(registroDTO.firstName());
+		usuario.setMiddleName(registroDTO.middleName());
+		usuario.setSurnames(registroDTO.surnames());
+		usuario.setIdentityNumber(registroDTO.identityNumber());
 		usuario.setCredential(newCredencial);
 
 		return usuarioServiceImpl.guardarUsuario(usuario);
 	}
 
-	public RegistroResponseDTO usuarioMapearRegistro(Usuario usuario) {
-		RegistroResponseDTO registro = new RegistroResponseDTO();
-		registro.setFirstName(usuario.getFirstName());
-		registro.setSurnames(usuario.getSurnames());
-		registro.setIdentityNumber(usuario.getIdentityNumber());
-		registro.setUsername(usuario.getCredential().getUsername());
-		return registro;
+	public RegistroResponseDTO usuarioMapearRegistro(Usuario usuario) {		
+		return new RegistroResponseDTO(
+				usuario.getFirstName(), 
+				usuario.getSurnames(), 
+				usuario.getIdentityNumber(), 
+				usuario.getCredential().getUsername());
 	}
 
 }
