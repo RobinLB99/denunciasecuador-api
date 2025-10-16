@@ -1,6 +1,7 @@
 package ec.com.denunciasecuador.feature.usuario.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,17 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@EqualsAndHashCode
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "Usuarios")
 public class Usuario implements Serializable {
@@ -47,5 +38,79 @@ public class Usuario implements Serializable {
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "credential_id", referencedColumnName = "credentials_id", nullable = false)
 	private Credencial credential;
+
+	public Usuario() {
+		super();
+	}
+
+	public Usuario(String firstName, String middleName, String surnames, String identityNumber, Credencial credential) {
+		super();
+		this.firstName = firstName;
+		this.middleName = middleName;
+		this.surnames = surnames;
+		this.identityNumber = identityNumber;
+		this.credential = credential;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	public String getSurnames() {
+		return surnames;
+	}
+
+	public void setSurnames(String surnames) {
+		this.surnames = surnames;
+	}
+
+	public String getIdentityNumber() {
+		return identityNumber;
+	}
+
+	public void setIdentityNumber(String identityNumber) {
+		this.identityNumber = identityNumber;
+	}
+
+	public Credencial getCredential() {
+		return credential;
+	}
+
+	public void setCredential(Credencial credential) {
+		this.credential = credential;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id, identityNumber);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Usuario other = (Usuario) obj;
+		return Objects.equals(id, other.id) && Objects.equals(identityNumber, other.identityNumber);
+	}
 
 }

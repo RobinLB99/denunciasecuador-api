@@ -15,19 +15,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import java.util.Objects;
 
-@ToString
-@EqualsAndHashCode
-@Setter
-@Getter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "Denuncias")
 public class Denuncia implements Serializable {
@@ -61,5 +50,98 @@ public class Denuncia implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "usuario_id", nullable = false)
 	private Usuario usuario;
+
+	public Denuncia(String title, String description, LocalDateTime eventTimestamp, String cityProvince,
+			boolean isPrivate, TipoDenuncia reportType, Usuario usuario) {
+		super();
+		this.title = title;
+		this.description = description;
+		this.eventTimestamp = eventTimestamp;
+		this.cityProvince = cityProvince;
+		this.isPrivate = isPrivate;
+		this.reportType = reportType;
+		this.usuario = usuario;
+	}
+
+	public Denuncia() {
+		super();
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public LocalDateTime getEventTimestamp() {
+		return eventTimestamp;
+	}
+
+	public void setEventTimestamp(LocalDateTime eventTimestamp) {
+		this.eventTimestamp = eventTimestamp;
+	}
+
+	public String getCityProvince() {
+		return cityProvince;
+	}
+
+	public void setCityProvince(String cityProvince) {
+		this.cityProvince = cityProvince;
+	}
+
+	public boolean isPrivate() {
+		return isPrivate;
+	}
+
+	public void setPrivate(boolean isPrivate) {
+		this.isPrivate = isPrivate;
+	}
+
+	public TipoDenuncia getReportType() {
+		return reportType;
+	}
+
+	public void setReportType(TipoDenuncia reportType) {
+		this.reportType = reportType;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Denuncia other = (Denuncia) obj;
+		return Objects.equals(id, other.id);
+	}
 
 }
