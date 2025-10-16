@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ec.com.denunciasecuador.feature.denuncia.dto.DenunciaRequestDTO;
 import ec.com.denunciasecuador.feature.denuncia.dto.DenunciaResponseDTO;
 import ec.com.denunciasecuador.feature.denuncia.model.Denuncia;
+import ec.com.denunciasecuador.feature.denuncia.service.DenunciaDTOServiceImpl;
 import ec.com.denunciasecuador.feature.denuncia.service.DenunciaServiceImpl;
 import jakarta.validation.Valid;
 
@@ -23,44 +24,36 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class DenunciaController {
 
 	private DenunciaServiceImpl denunciaServiceImpl;
+	private DenunciaDTOServiceImpl denunciaDTOService;
 
-	public DenunciaController(DenunciaServiceImpl denunciaServiceImpl) {
+	public DenunciaController(DenunciaServiceImpl denunciaServiceImpl, DenunciaDTOServiceImpl denunciaDTOService) {
 		this.denunciaServiceImpl = denunciaServiceImpl;
+		this.denunciaDTOService = denunciaDTOService;
 	}
 
 	@GetMapping("/getById/{id}")
 	public ResponseEntity<DenunciaResponseDTO> obtenerDenunciaPorId(@PathVariable Long id) {
-		DenunciaResponseDTO denunciaResponseDTO = crearDenunciaResponseDTO(
-				denunciaServiceImpl.obtenerDenunciaPorId(id));
+		DenunciaResponseDTO denunciaResponseDTO = denunciaDTOService
+				.crearDenunciaResponseDTO(denunciaServiceImpl.obtenerDenunciaPorId(id));
 		return ResponseEntity.ok(denunciaResponseDTO);
 	}
 
 	@GetMapping("/getByIdentityNumberUsuario/{identityNumber}")
-	public ResponseEntity<Page<Denuncia>> obtenerDenunciaPorCIUsuario(@PathVariable String identityNumber,
-			@RequestParam("page") int numPage, @RequestParam("size") int pageSize) {
-		return ResponseEntity
-				.ok(denunciaServiceImpl.obtenerDenunciasPorNumeroIdentidadUsuario(identityNumber, numPage, pageSize));
+	public ResponseEntity<Page<Denuncia>> obtenerDenunciaPorCIUsuario(
+			@PathVariable String identityNumber,
+			@RequestParam("page") int numPage, 
+			@RequestParam("size") int pageSize) {
+		Page<Denuncia> denunciasPage = denunciaServiceImpl
+				.obtenerDenunciasPorNumeroIdentidadUsuario(identityNumber, numPage, pageSize);
+		return ResponseEntity.ok(denunciasPage);
 	}
 
 	@PostMapping("/guardar_denuncia")
 	public ResponseEntity<DenunciaResponseDTO> guardarDenuncia(
 			@Valid @RequestBody DenunciaRequestDTO denunciaRequestDTO) {
-		DenunciaResponseDTO denunciaResponseDTO = crearDenunciaResponseDTO(
-				denunciaServiceImpl.guardarDenuncia(denunciaRequestDTO));
+		DenunciaResponseDTO denunciaResponseDTO = denunciaDTOService
+				.crearDenunciaResponseDTO(denunciaServiceImpl.guardarDenuncia(denunciaRequestDTO));
 		return ResponseEntity.status(HttpStatus.CREATED).body(denunciaResponseDTO);
-	}
-
-	private DenunciaResponseDTO crearDenunciaResponseDTO(Denuncia denuncia) {
-		DenunciaResponseDTO denunciaResponseDTO = new DenunciaResponseDTO();
-		denunciaResponseDTO.setReport_id(denuncia.getId());
-		denunciaResponseDTO.setTitle(denuncia.getTitle());
-		denunciaResponseDTO.setDescription(denuncia.getDescription());
-		denunciaResponseDTO.setEventTimestamp(denuncia.getEventTimestamp());
-		denunciaResponseDTO.setCityProvince(denuncia.getCityProvince());
-		denunciaResponseDTO.setPrivate(denuncia.isPrivate());
-		denunciaResponseDTO.setReportType(denuncia.getReportType().toString());
-		denunciaResponseDTO.setUsuario_id(denuncia.getUsuario().getId());
-		return denunciaResponseDTO;
 	}
 
 }

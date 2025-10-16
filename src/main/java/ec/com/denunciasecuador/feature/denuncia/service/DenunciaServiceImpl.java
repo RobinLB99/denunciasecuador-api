@@ -30,9 +30,9 @@ public class DenunciaServiceImpl implements DenunciaService {
 	@Override
 	@Transactional
 	public Denuncia guardarDenuncia(DenunciaRequestDTO denunciaRequestDTO) {
-		Usuario usuario = usuarioRepository.findById(denunciaRequestDTO.getUsuario_id())
+		Usuario usuario = usuarioRepository.findById(denunciaRequestDTO.usuario_id())
 				.orElseThrow(() -> new UsuarioNotFoundException("No se encontro el usuario con el ID '"
-						+ denunciaRequestDTO.getUsuario_id() + "', por lo tanto, la denuncia no se guarda."));
+						+ denunciaRequestDTO.usuario_id() + "', por lo tanto, la denuncia no se guarda."));
 		return denunciaRepository.save(crearObjetoDenuncia(denunciaRequestDTO, usuario));
 	}
 
@@ -74,11 +74,11 @@ public class DenunciaServiceImpl implements DenunciaService {
 
 	private final Denuncia crearObjetoDenuncia(DenunciaRequestDTO denunciaRequestDTO, Usuario usuario) {
 		Denuncia denuncia = new Denuncia();
-		denuncia.setTitle(denunciaRequestDTO.getTitle());
-		denuncia.setDescription(denunciaRequestDTO.getDescription());
-		denuncia.setReportType(denunciaRequestDTO.getReportType());
-		denuncia.setEventTimestamp(denunciaRequestDTO.getEventTimestamp());
-		denuncia.setCityProvince(denunciaRequestDTO.getCityProvince());
+		denuncia.setTitle(denunciaRequestDTO.title());
+		denuncia.setDescription(denunciaRequestDTO.description());
+		denuncia.setReportType(denunciaRequestDTO.reportType());
+		denuncia.setEventTimestamp(denunciaRequestDTO.eventTimestamp());
+		denuncia.setCityProvince(denunciaRequestDTO.cityProvince());
 		denuncia.setPrivate(denunciaRequestDTO.isPrivate());
 		denuncia.setUsuario(usuario);
 		return denuncia;
