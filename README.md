@@ -118,7 +118,7 @@ Asegúrate de tener MariaDB instalado y configurado.
 
 ### Registro
 
-#### Crear nuevo registro
+#### Registarse en la API
 ```http
 POST /registro/nuevo_registro
 Content-Type: application/json
@@ -143,21 +143,6 @@ GET /usuarios/getByCI/{numeroIdentidad}
 #### Obtener usuario por ID
 ```http
 GET /usuarios/getById/{id}
-```
-
-#### Registrarse
-```http
-POST /registrarse/guardar_registro
-Content-Type: application/json
-
-{
-  "firstName": "María",
-  "middleName": "Isabel",
-  "surnames": "González Ruiz",
-  "identityNumber": "0987654321",
-  "username": "tuNombreDeUsuario",
-  "password": "contraseña_segura"
-}
 ```
 
 ### Denuncias
@@ -223,20 +208,6 @@ El proyecto incluye Spring Boot DevTools para hot-reload durante el desarrollo:
 ```bash
 ./mvnw spring-boot:run
 ```
-
-### Ejecutar tests
-
-```bash
-./mvnw test
-```
-
-### Compilar para producción
-
-```bash
-./mvnw clean package
-```
-
-El archivo JAR se generará en `target/denunciasecuador-1.0.0-SNAPSHOT.jar`
 
 ## Configuración de Base de Datos
 
