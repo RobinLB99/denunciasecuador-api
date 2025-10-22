@@ -37,10 +37,8 @@ public class SecurityConfig {
         	.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth ->
                 auth
-                    .requestMatchers("/registro/**")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated()
+                    .requestMatchers("/registro/**").permitAll()
+                    .anyRequest().authenticated()
             )
             .httpBasic(Customizer.withDefaults());
         return http.build();
